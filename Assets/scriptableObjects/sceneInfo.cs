@@ -7,7 +7,7 @@ public class sceneInfo : ScriptableObject
 {
     public bool isnextscene = true;
     public bool hasKey=false;
-    public int scene,lunghezzascala;
+    public int scene, lunghezzascala, var;
     public int inventory = 0;
     public GameObject inventoryObject, inventoryObject2 ;
     public bool hasLadder = false;

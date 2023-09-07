@@ -614,76 +614,171 @@ public class scena2 : MonoBehaviour
                     break;
 
                 case "buttonKey":
-                    if (dist < 15 )//&& assigned == false && placed == true)
+                    if (dist < 15)//&& assigned == false && placed == true)
                     {
                         cnt += Time.deltaTime;
                         gaze.fillAmount = cnt / time;
                         if (gaze.fillAmount == 1)
                         {
-                            if (objecthit.gameObject.GetComponentInChildren<TextMeshProUGUI>().text == "Key k= new Key();")
+                            switch (objecthit.gameObject.GetComponentInChildren<TextMeshProUGUI>().text)
                             {
-                                z = CheckObjectPosition("Key", tempUp, tempDown);
-                                switch (z)
-                                {
-                                    case 0:
-                                        text.text = "Object not found";
+                                case "Key k= new Key();":
+                                    z = CheckObjectPosition("Key", tempUp, tempDown);
+                                    switch (z)
+                                    {
+                                        case 0:
+                                            text.text = "Object not found";
 
-                                        break;
-                                    case 1:
-                                        tempUp = ReplaceObject(key, tempUp);
-                                        assigned = true;
-                                        text.text = "object created";
-                                        break;
-                                    case 2:
-                                        tempDown = ReplaceObject(key, tempDown);
-                                        assigned = true;
-                                        text.text = "object created";
-                                        break;
-                                    default:
-                                        text.text = "Lezzo";
-                                        break;
-                                }
-                            }
-                            else
-                           if (objecthit.gameObject.GetComponentInChildren<TextMeshProUGUI>().text == "Ladder ladder = new Ladder()")
-                            {
-                                z = CheckObjectPosition("Ladder", tempUp, tempDown);
-                                switch (z)
-                                {
-                                    case 0:
-                                        text.text = "Object not found";
+                                            break;
+                                        case 1:
+                                            tempUp = ReplaceObject(key, tempUp);
+                                            assigned = true;
+                                            text.text = "object created";
+                                            break;
+                                        case 2:
+                                            tempDown = ReplaceObject(key, tempDown);
+                                            assigned = true;
+                                            text.text = "object created";
+                                            break;
+                                        default:
+                                            text.text = "Lezzo";
+                                            break;
+                                    }
+                                    break;
 
-                                        break;
-                                    case 1:
-                                        tempUp = ReplaceObject(ladder, tempUp);
-                                        tempUp.gameObject.transform.localScale= new Vector3(0.16f,0.16f,0.16f);
-                                        tempUp.gameObject.transform.position = new Vector3(tempUp.transform.position.x, tempUp.transform.position.y - 0.25f, tempUp.transform.position.z);
-                                        assigned = true;
-                                        text.text = "object created";
-                                        break;
-                                    case 2:
-                                        tempDown = ReplaceObject(ladder, tempDown);
-                                        tempDown.gameObject.transform.localScale = new Vector3(0.16f, 0.16f, 0.16f);
-                                        tempDown.gameObject.transform.position = new Vector3(tempDown.transform.position.x, tempDown.transform.position.y- 0.25f, tempDown.transform.position.z);
-                                        assigned = true;
-                                        text.text = "object created";
-                                        break;
-                                    default:
-                                        text.text = "Lezzo";
-                                        break;
-                                }
+
+                                case "Ladder ladder = new Ladder()":
+
+                                    z = CheckObjectPosition("Ladder", tempUp, tempDown);
+                                    switch (z)
+                                    {
+                                        case 0:
+                                            text.text = "Object not found";
+
+                                            break;
+                                        case 1:
+                                            tempUp = ReplaceObject(ladder, tempUp);
+                                            tempUp.gameObject.transform.localScale = new Vector3(0.16f, 0.16f, 0.16f);
+                                            tempUp.gameObject.transform.position = new Vector3(tempUp.transform.position.x, tempUp.transform.position.y - 0.25f, tempUp.transform.position.z);
+                                            assigned = true;
+                                            text.text = "object created";
+                                            break;
+                                        case 2:
+                                            tempDown = ReplaceObject(ladder, tempDown);
+                                            tempDown.gameObject.transform.localScale = new Vector3(0.16f, 0.16f, 0.16f);
+                                            tempDown.gameObject.transform.position = new Vector3(tempDown.transform.position.x, tempDown.transform.position.y - 0.25f, tempDown.transform.position.z);
+                                            assigned = true;
+                                            text.text = "object created";
+                                            break;
+                                        default:
+                                            text.text = "Lezzo";
+                                            break;
+                                    }
+                                    break;
+
+                                case "ladder.length(var)":
+                                    switch (sceneInfo.var) {
+                                        case 1:
+                                            sceneInfo.lunghezzascala = 1;
+                                           
+                                                    break;
+                                        case 2:
+                                            sceneInfo.lunghezzascala = 2;
+                                            
+                                            break;
+                                        case 3:
+                                            sceneInfo.lunghezzascala = 3;
+                                           
+                                            break;
+
+
+                                    }
+                                    break;
+
+
+                                case "Int var = Window.height": sceneInfo.var = 3;
+                                    z = CheckObjectPosition("Ladder", tempUp, tempDown);
+                                    switch (z)
+                                    {
+                                        case 0:
+                                            text.text = "Object not found";
+
+                                            break;
+                                        case 1:
+
+                                            tempUp.GetComponent<TextMeshProUGUI>().text = "3";
+                                            text.text = "variable changed";
+                                            break;
+                                        case 2:
+                                            tempDown.GetComponent<TextMeshProUGUI>().text = "3";
+
+                                            text.text = "variable changed";
+                                            break;
+                                    }
+                                    break;
+
+
+                                case "Int var = 1":
+                                    sceneInfo.var = 1;
+                                    z = CheckObjectPosition("Ladder", tempUp, tempDown);
+                                    switch (z)
+                                    {
+                                        case 0:
+                                            text.text = "Object not found";
+
+                                            break;
+                                        case 1:
+
+                                            tempUp.GetComponent<TextMeshProUGUI>().text = "1";
+                                            text.text = "variable changed";
+                                            break;
+                                        case 2:
+                                            tempDown.GetComponent<TextMeshProUGUI>().text = "1";
+
+                                            text.text = "variable changed";
+                                            break;
+                                    }
+                                    break;
+
+
+
+                                case "Int var = 2":
+                                    sceneInfo.var = 2;
+                                    z = CheckObjectPosition("Ladder", tempUp, tempDown);
+                                    switch (z)
+                                    {
+                                        case 0:
+                                            text.text = "Object not found";
+
+                                            break;
+                                        case 1:
+
+                                            tempUp.GetComponent<TextMeshProUGUI>().text = "2";
+                                            text.text = "variable changed";
+                                            break;
+                                        case 2:
+                                            tempDown.GetComponent<TextMeshProUGUI>().text = "2";
+
+                                            text.text = "variable changed";
+                                            break;
+                                    }
+                                    break;
+
+
                             }
                             cnt = 0;
                             gaze.fillAmount = 0;
-                            
+
                             modified = true;
                             monitor.GetComponent<Animator>().Play("MonitorOff");
                             open2 = false;
                             tagged = "default";
+
                         }
                     }
+                        break;
 
-                    break;
+
                 case "door":
                     cnt += Time.deltaTime;
                     gaze.fillAmount = cnt / time;                 
@@ -879,7 +974,23 @@ public class scena2 : MonoBehaviour
             a12.gameObject.SetActive(false);
 
         }
-        else if (tagged == "Int" || tagged1 == "Int")//&& tagged == "default" || tagged1 == "default")
+        else if ((tagged == "Int" || tagged1 == "Int") && (tagged == "Window" || tagged1 == "Window"))//&& tagged == "default" || tagged1 == "default")
+        {
+            ButtonRoutine(a3, "Int var = 2", "buttonKey");
+            ButtonRoutine(a4, "Int var = 1", "buttonKey");
+            ButtonRoutine(a1, "Int var = Window.height", "buttonKey");
+            a2.gameObject.SetActive(false);
+
+            a5.gameObject.SetActive(false);
+            a6.gameObject.SetActive(false);
+            a7.gameObject.SetActive(false);
+            a8.gameObject.SetActive(false);
+            a9.gameObject.SetActive(false);
+            a10.gameObject.SetActive(false);
+            a11.gameObject.SetActive(false);
+            a12.gameObject.SetActive(false);
+        }
+        else if( tagged == "Int" || tagged1 == "Int")
         {
             ButtonRoutine(a3, "Int var = 2", "buttonKey");
             ButtonRoutine(a4, "Int var = 1", "buttonKey");
@@ -896,7 +1007,7 @@ public class scena2 : MonoBehaviour
             a12.gameObject.SetActive(false);
         }
 
-        if ((tagged == "Key" && tagged1 == "Color" ) || (tagged1 == "Key" && tagged == "Color"))
+            if ((tagged == "Key" && tagged1 == "Color" ) || (tagged1 == "Key" && tagged == "Color"))
         {
             ButtonRoutine(a1, "Key k= new Key();", "buttonKey");
             ButtonRoutine(a2, "k.MaterialColor(color)", "buttonKey");
