@@ -21,6 +21,7 @@ TagManager:
   - assignerUp
   - ladder
   - book3
+  - place
   layers:
   - Default
   - TransparentFX

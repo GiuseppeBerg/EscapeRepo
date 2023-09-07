@@ -18,6 +18,7 @@ using System.Runtime.CompilerServices;
 public class scena2 : MonoBehaviour
 {
     public CharacterController controller;
+   
     public float speed = 5f;
     //Animator animator;
     private bool isWalking;
@@ -63,14 +64,15 @@ public class scena2 : MonoBehaviour
     [SerializeField] public sceneInfo sceneInfo;
     public GameObject space1, space2;
     public Transform slot1;
-    public GameObject c, c1;
+    public GameObject c, c1,tmp;
+
     // Start is called before the first frame update
     void Start()
     {
         
         //animator = GetComponent<Animator>();
         rigidcomponent = GetComponent<Rigidbody>();
-       
+    
         gaze.fillAmount = 0;
         open = false;
         open2 = false;
@@ -121,6 +123,23 @@ public class scena2 : MonoBehaviour
         {
             speed = 5;
 
+            space1 = c;
+            space2 = c1;
+            
+            
+            open = false;
+            open2 = false;
+            open3 = false;
+            sceneInfo.lvpassed = false;
+            open4 = false;
+            placed = false;
+            interacted = false;
+            assigned = false;
+            objectaken = false;
+            modified = false;
+            text.text = "";
+            tempUp = null; tempDown = null;
+
             a1 = GameObject.Find("Button").GetComponent<Button>();
             a2 = GameObject.Find("Button (1)").GetComponent<Button>();
             a3 = GameObject.Find("Button (2)").GetComponent<Button>();
@@ -162,10 +181,45 @@ public class scena2 : MonoBehaviour
         }
         else if (sceneInfo.changed == true && sceneInfo.actualscene == 3)
         {
+            if (sceneInfo.lvpassed==true)
+            {
+                space1 = null;
+                space2=null;
+                Destroy(c);
+                Destroy(c1);
+                c = null;
+                c1 = null;
+                open=false;
+                open2 = false;
+                open3 = false;
+                
+                open4 = false;
+                placed = false;
+                interacted = false;
+                assigned = false;
+                objectaken = false;
+                modified = false;
+                text.text = "";
+                tempUp = null; tempDown = null;
+                sceneInfo.inventory = 0;
+                sceneInfo.lvpassed = false;
+
+            }
             sceneInfo.scene = 3;
-            sceneInfo.changed = false;
+            
             explored.SetAll(false);
             speed = 8;
+            tmp = GameObject.Find("triggerplace");
+            GameObject.Find("Ladder").SetActive(false);
+           GameObject.Find("Ladder (1)").SetActive(false);
+             GameObject.Find("Ladder (2)").SetActive(false);
+            if (sceneInfo.hasLadder) {
+                
+                tmp.SetActive(true);
+            }
+
+            else tmp.SetActive(false);
+            sceneInfo.changed = false;
         }
 
         //gaze.fillAmount = 0;
@@ -221,10 +275,35 @@ public class scena2 : MonoBehaviour
             }
             switch (tag)
             {
-                case "phone":
+                case "place":
+                    if (sceneInfo.hasLadder)
+                        cnt+= Time.deltaTime;
+                    gaze.fillAmount= cnt / time;
+                    if (gaze.fillAmount == 1)
+                    {
+                        if (sceneInfo.lunghezzascala == 3)
+                        {
+                            GameObject.Find("Ladder").SetActive(true);
+                            GameObject.Find("Ladder (1)").SetActive(true);
+                            GameObject.Find("Ladder (2)").SetActive(true);
+                        }
+                        else if (sceneInfo.lunghezzascala == 2)
+                        {
+                            GameObject.Find("Ladder (1)").SetActive(true);
+                            GameObject.Find("Ladder").SetActive(true);
+                        }
+                        else GameObject.Find("Ladder").SetActive(true);
 
-                    
-                    break;
+                        sceneInfo.hasLadder = false;
+                        GameObject.Find("triggerplace").SetActive(false);
+                        cnt = 0;
+                        gaze.fillAmount = 0;
+
+                    }
+
+
+
+                        break;
                 case "book3":
                     cnt += Time.deltaTime;
                     gaze.fillAmount = cnt / time;

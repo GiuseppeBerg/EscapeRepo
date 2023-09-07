@@ -15,10 +15,12 @@ MonoBehaviour:
   isnextscene: 0
   hasKey: 0
   scene: 3
+  lunghezzascala: 3
   inventory: 0
   inventoryObject: {fileID: 0}
   inventoryObject2: {fileID: 0}
-  hasLadder: 0
+  hasLadder: 1
   actualscene: 3
   v: 0
   changed: 0
+  lvpassed: 0

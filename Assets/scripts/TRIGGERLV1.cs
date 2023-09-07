@@ -22,6 +22,7 @@ public class TRIGGERLV1 : MonoBehaviour
         player.SetActive(true);
         sceneInfo.changed = true;
         sceneInfo.actualscene = 3;
+        sceneInfo.lvpassed = true;
         SceneManager.LoadScene("scene3");
     }
 }
