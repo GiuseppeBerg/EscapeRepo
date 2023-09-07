@@ -64,7 +64,7 @@ public class scena2 : MonoBehaviour
     [SerializeField] public sceneInfo sceneInfo;
     public GameObject space1, space2;
     public Transform slot1;
-    public GameObject c, c1,tmp;
+    public GameObject c, c1,tmp,scala1,scala2,scala3;
 
     // Start is called before the first frame update
     void Start()
@@ -210,9 +210,13 @@ public class scena2 : MonoBehaviour
             explored.SetAll(false);
             speed = 8;
             tmp = GameObject.Find("triggerplace");
-            GameObject.Find("Ladder").SetActive(false);
-           GameObject.Find("Ladder (1)").SetActive(false);
-             GameObject.Find("Ladder (2)").SetActive(false);
+            scala1 = GameObject.Find("Ladder");
+           scala2 = GameObject.Find("Ladder (1)");
+             scala3 = GameObject.Find("Ladder (2)");
+
+            scala1.SetActive(false);
+            scala2.SetActive(false);
+            scala3.SetActive(false);
             if (sceneInfo.hasLadder) {
                 
                 tmp.SetActive(true);
@@ -283,16 +287,17 @@ public class scena2 : MonoBehaviour
                     {
                         if (sceneInfo.lunghezzascala == 3)
                         {
-                            GameObject.Find("Ladder").SetActive(true);
-                            GameObject.Find("Ladder (1)").SetActive(true);
-                            GameObject.Find("Ladder (2)").SetActive(true);
+                            scala1.SetActive(true);
+                            scala2.SetActive(true);
+                            scala3.SetActive(true);
                         }
                         else if (sceneInfo.lunghezzascala == 2)
                         {
-                            GameObject.Find("Ladder (1)").SetActive(true);
-                            GameObject.Find("Ladder").SetActive(true);
+
+                            scala1.SetActive(true);
+                            scala2.SetActive(true);
                         }
-                        else GameObject.Find("Ladder").SetActive(true);
+                        else scala1.SetActive(true);
 
                         sceneInfo.hasLadder = false;
                         GameObject.Find("triggerplace").SetActive(false);
