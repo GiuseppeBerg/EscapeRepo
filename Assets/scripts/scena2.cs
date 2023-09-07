@@ -362,8 +362,14 @@ public class scena2 : MonoBehaviour
                         gaze.fillAmount = cnt / time;
                         if (gaze.fillAmount == 1)
                         {
+                            //Destroy(objecthit.gameObject);
+                            GameObject[] list = new GameObject[4];
+                            list =Collect(objecthit.gameObject,c,c1,slot1,space1,space2);
+                            c = list[0];
+                            c1 = list[1];
+                            space1 = list[2];
+                            space2 = list[3];
                             Destroy(objecthit.gameObject);
-
                             text.text = ("variable taken");
                             modified = true;
 
@@ -613,6 +619,16 @@ public class scena2 : MonoBehaviour
 
                     break;
 
+
+                    //-----------------------------
+                    //---------------------------------
+                    //----------------buttons----------
+                    //
+                    //
+                    //
+                    //
+
+
                 case "buttonKey":
                     if (dist < 15)//&& assigned == false && placed == true)
                     {
@@ -693,11 +709,12 @@ public class scena2 : MonoBehaviour
 
 
                                     }
+                                    text.text = "ladder changed";
                                     break;
 
 
                                 case "Int var = Window.height": sceneInfo.var = 3;
-                                    z = CheckObjectPosition("Ladder", tempUp, tempDown);
+                                    z = CheckObjectPosition("Int", tempUp, tempDown);
                                     switch (z)
                                     {
                                         case 0:
@@ -720,7 +737,7 @@ public class scena2 : MonoBehaviour
 
                                 case "Int var = 1":
                                     sceneInfo.var = 1;
-                                    z = CheckObjectPosition("Ladder", tempUp, tempDown);
+                                    z = CheckObjectPosition("Int", tempUp, tempDown);
                                     switch (z)
                                     {
                                         case 0:
@@ -744,7 +761,7 @@ public class scena2 : MonoBehaviour
 
                                 case "Int var = 2":
                                     sceneInfo.var = 2;
-                                    z = CheckObjectPosition("Ladder", tempUp, tempDown);
+                                    z = CheckObjectPosition("Int", tempUp, tempDown);
                                     switch (z)
                                     {
                                         case 0:
@@ -1235,6 +1252,9 @@ public class scena2 : MonoBehaviour
             case "ladder": namevar = "Ladder";
                 sceneInfo.hasLadder = true;
                 break;
+            case "height":
+                namevar = "height";
+                break;
             default:
                 namevar = "";
                 break;
@@ -1316,6 +1336,12 @@ public class scena2 : MonoBehaviour
             case "ladder":
                 o.transform.localScale = slot1.localScale /5.5f;
                 o.transform.position = new Vector3 (o.transform.position.x, o.transform.position.y-10, o.transform.position.z);
+                break;
+            case "height": 
+                o.transform.rotation = new Quaternion(90, 0,45,o.transform.rotation.w);
+                o.transform.localScale = slot1.localScale/2f;
+                o.transform.position = new Vector3(o.transform.position.x, o.transform.position.y - 10, o.transform.position.z);
+
                 break;
             default:
                 o.transform.localScale = slot1.localScale ;

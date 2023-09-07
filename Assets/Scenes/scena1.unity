@@ -2771,7 +2771,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1080280285}
   m_LocalRotation: {x: -0.047701083, y: -0.52699184, z: 0.04707386, w: 0.8472239}
-  m_LocalPosition: {x: 0, y: 0, z: -277.19995}
+  m_LocalPosition: {x: 0, y: 0, z: -215}
   m_LocalScale: {x: 130, y: 130, z: 130}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2779,7 +2779,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -1.789, y: -63.882, z: 7.476}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: -150}
+  m_AnchoredPosition: {x: -127, y: -142}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!65 &1080280287
@@ -5338,6 +5338,10 @@ MonoBehaviour:
   slot1: {fileID: 1080280286}
   c: {fileID: 0}
   c1: {fileID: 0}
+  tmp: {fileID: 0}
+  scala1: {fileID: 0}
+  scala2: {fileID: 0}
+  scala3: {fileID: 0}
 --- !u!143 &2093618292 stripped
 CharacterController:
   m_CorrespondingSourceObject: {fileID: 3830943798557195476, guid: 3fb452f5506d2b141b2b92960bc75ae9, type: 3}
