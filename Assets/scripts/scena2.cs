@@ -52,7 +52,7 @@ public class scena2 : MonoBehaviour
     public GameObject spawner,libro,prefablibro1,prefablibro2,prefablibro3;
     private Vector3 Pos;
     private Quaternion Rot;
-    private bool interacted, assigned, placed,placed2, objectaken, modified;
+    private bool interacted, placed,placed2, modified,modified1;
     public GameObject key, resetted,ladder;
     private string tagged,tagged1, pretext;
     private int z = 0;
@@ -64,7 +64,7 @@ public class scena2 : MonoBehaviour
     [SerializeField] public sceneInfo sceneInfo;
     public GameObject space1, space2;
     public Transform slot1;
-    public GameObject c, c1,tmp,scala1,scala2,scala3;
+    public GameObject c, c1,tmp,scala1,scala2,scala3,invisible;
 
     // Start is called before the first frame update
     void Start()
@@ -80,15 +80,14 @@ public class scena2 : MonoBehaviour
         open4 = false;
         placed = false;
         interacted = false;
-        assigned = false;
-        objectaken = false;
+        
         modified = false;
         text.text = "";
         tempUp=null; tempDown=null;
         sceneInfo.inventory = 0;
         space1 = null; space2=null;
         c1 = c = null;
-        
+        invisible = null;
         
         explored.SetAll(false);
         sceneInfo.actualscene = 1;
@@ -134,8 +133,7 @@ public class scena2 : MonoBehaviour
             open4 = false;
             placed = false;
             interacted = false;
-            assigned = false;
-            objectaken = false;
+            
             modified = false;
             text.text = "";
             tempUp = null; tempDown = null;
@@ -192,12 +190,12 @@ public class scena2 : MonoBehaviour
                 open=false;
                 open2 = false;
                 open3 = false;
-                
+                sceneInfo.lunghezzascala = 0;
+                sceneInfo.var = 0;
                 open4 = false;
                 placed = false;
                 interacted = false;
-                assigned = false;
-                objectaken = false;
+               
                 modified = false;
                 text.text = "";
                 tempUp = null; tempDown = null;
@@ -310,17 +308,21 @@ public class scena2 : MonoBehaviour
 
                         break;
                 case "book3":
-                    cnt += Time.deltaTime;
-                    gaze.fillAmount = cnt / time;
-                    if (gaze.fillAmount == 1)
+                    if (modified1 == false)
                     {
-                        explored.SetAll( true);
-                        modified = true;
-                        // img.fillAmount = 1f;
-                        cnt = 0;
-                        gaze.fillAmount = 0;
-                        libro = Instantiate(prefablibro3, img.transform.position, img.transform.rotation);
-                        GetComponent<CharacterController>().minMoveDistance = 1000f;
+                        cnt += Time.deltaTime;
+                        gaze.fillAmount = cnt / time;
+                        if (gaze.fillAmount == 1)
+                        {
+                            explored.SetAll(true);
+                            modified1 = true;
+                            // img.fillAmount = 1f;
+                            cnt = 0;
+                            gaze.fillAmount = 0;
+                            libro = Instantiate(prefablibro3, img.transform.position, img.transform.rotation);
+                            GetComponent<CharacterController>().minMoveDistance = 1000f;
+                          
+                        }
                     }
                     break;
                 case "chest":
@@ -399,21 +401,24 @@ public class scena2 : MonoBehaviour
 
                     break;
                 case "keyboard" :
-                    cnt += Time.deltaTime;
-                   // objecthit.gameObject.GetComponent<MeshRenderer>().material = mat;
-                    gaze.fillAmount = cnt / time;
-                    if (gaze.fillAmount == 1 && explored.Get(0) == true && explored.Get(1) == true)
+                    if (modified1 == false)
                     {
-                        sceneInfo.v = true;
-                        cnt = 0;
-                        gaze.fillAmount = 0;
-                    }
-                    else if (gaze.fillAmount == 1)
-                    {
-                        text.text = "Try to read some books first";
-                        modified = true;
-                        cnt = 0;
-                        gaze.fillAmount = 0;
+                        cnt += Time.deltaTime;
+                        // objecthit.gameObject.GetComponent<MeshRenderer>().material = mat;
+                        gaze.fillAmount = cnt / time;
+                        if (gaze.fillAmount == 1 && explored.Get(0) == true && explored.Get(1) == true)
+                        {
+                            sceneInfo.v = true;
+                            cnt = 0;
+                            gaze.fillAmount = 0;
+                        }
+                        else if (gaze.fillAmount == 1)
+                        {
+                            text.text = "Try to read some books first";
+                            modified = true;
+                            cnt = 0;
+                            gaze.fillAmount = 0;
+                        }
                     }
                     break;
                 case "assigner":
@@ -438,6 +443,10 @@ public class scena2 : MonoBehaviour
                                 case "ladder":
                                     namevar = "Ladder";
                                     sceneInfo.hasLadder = false;
+                                    pretext = "ladder";
+                                    break;
+                                    case "height": namevar= "height";
+                                    pretext = space1.GetComponentInChildren<TextMeshProUGUI>().text;
                                     break;
                                 default:
                                     namevar = "variabile_chiave";
@@ -462,6 +471,12 @@ public class scena2 : MonoBehaviour
                             {
                                 tempDown.gameObject.transform.localScale = new Vector3(0.16f, 0.16f, 0.16f);
                                 tempDown.gameObject.transform.position = new Vector3(tempDown.transform.position.x, tempDown.transform.position.y - 0.25f, tempDown.transform.position.z);
+                            }
+                            else if (namevar=="height")
+                            {
+                               // tempDown.gameObject.transform.localScale = new Vector3(0.16f, 0.16f, 0.16f);
+                                tempDown.gameObject.transform.position = new Vector3(tempDown.transform.position.x, tempDown.transform.position.y , tempDown.transform.position.z);
+                                tempDown.gameObject.transform.rotation = new Quaternion(tempDown.transform.rotation.x, tempDown.transform.rotation.y +180, tempDown.transform.rotation.z-90 , tempDown.transform.rotation.w);
                             }
 
                             placed = true;
@@ -527,6 +542,10 @@ public class scena2 : MonoBehaviour
                                 case "ladder":
                                     namevar = "Ladder";
                                     sceneInfo.hasLadder = false;
+                                    pretext = "ladder";
+                                    break;
+                                case "height": namevar = "height";
+                                    pretext = space1.GetComponentInChildren<TextMeshProUGUI>().text;
                                     break;
                                 default: namevar = "variabile_chiave";
                                     break;
@@ -551,6 +570,13 @@ public class scena2 : MonoBehaviour
                                 tempUp.gameObject.transform.localScale = new Vector3(0.16f, 0.16f, 0.16f);
                                 tempUp.gameObject.transform.position = new Vector3(tempUp.transform.position.x, tempUp.transform.position.y - 0.25f, tempUp.transform.position.z);
                             }
+                            else if (namevar == "height")
+                            {
+                               // tempUp.gameObject.transform.localScale = new Vector3(0.16f, 0.16f, 0.16f);
+                                tempUp.gameObject.transform.position = new Vector3(tempUp.transform.position.x, tempUp.transform.position.y , tempUp.transform.position.z);
+                                tempUp.gameObject.transform.rotation = new Quaternion(tempUp.transform.rotation.x, tempUp.transform.rotation.y+180 , tempUp.transform.rotation.z-90, tempUp.transform.rotation.w);
+                            }
+
                             placed2 = true;
                             cnt = 0;
                             gaze.fillAmount = 0;
@@ -648,12 +674,12 @@ public class scena2 : MonoBehaviour
                                             break;
                                         case 1:
                                             tempUp = ReplaceObject(key, tempUp);
-                                            assigned = true;
+                                            
                                             text.text = "object created";
                                             break;
                                         case 2:
                                             tempDown = ReplaceObject(key, tempDown);
-                                            assigned = true;
+                                            
                                             text.text = "object created";
                                             break;
                                         default:
@@ -676,14 +702,14 @@ public class scena2 : MonoBehaviour
                                             tempUp = ReplaceObject(ladder, tempUp);
                                             tempUp.gameObject.transform.localScale = new Vector3(0.16f, 0.16f, 0.16f);
                                             tempUp.gameObject.transform.position = new Vector3(tempUp.transform.position.x, tempUp.transform.position.y - 0.25f, tempUp.transform.position.z);
-                                            assigned = true;
+                                            
                                             text.text = "object created";
                                             break;
                                         case 2:
                                             tempDown = ReplaceObject(ladder, tempDown);
                                             tempDown.gameObject.transform.localScale = new Vector3(0.16f, 0.16f, 0.16f);
                                             tempDown.gameObject.transform.position = new Vector3(tempDown.transform.position.x, tempDown.transform.position.y - 0.25f, tempDown.transform.position.z);
-                                            assigned = true;
+                                            
                                             text.text = "object created";
                                             break;
                                         default:
@@ -693,27 +719,39 @@ public class scena2 : MonoBehaviour
                                     break;
 
                                 case "ladder.length(var)":
-                                    switch (sceneInfo.var) {
-                                        case 1:
-                                            sceneInfo.lunghezzascala = 1;
-                                           
+                                    z = CheckObjectPosition("ladder", tempUp, tempDown);
+                                    if (z == 0) text.text = "there is no ladder,/n assign the variable first";
+                                    else
+                                    {
+                                        z = CheckObjectPosition("var", tempUp, tempDown);
+                                        if (z == 0) text.text = "var value not found or null";
+                                        else
+                                        {
+                                            switch (sceneInfo.var)
+                                            {
+                                                case 1:
+                                                    sceneInfo.lunghezzascala = 1;
+
                                                     break;
-                                        case 2:
-                                            sceneInfo.lunghezzascala = 2;
-                                            
-                                            break;
-                                        case 3:
-                                            sceneInfo.lunghezzascala = 3;
-                                           
-                                            break;
+                                                case 2:
+                                                    sceneInfo.lunghezzascala = 2;
+
+                                                    break;
+                                                case 3:
+                                                    sceneInfo.lunghezzascala = 3;
+
+                                                    break;
 
 
+                                            }
+                                            text.text = "ladder changed";
+                                        }
                                     }
-                                    text.text = "ladder changed";
                                     break;
 
 
                                 case "Int var = Window.height": sceneInfo.var = 3;
+                                    
                                     z = CheckObjectPosition("Int", tempUp, tempDown);
                                     switch (z)
                                     {
@@ -723,13 +761,13 @@ public class scena2 : MonoBehaviour
                                             break;
                                         case 1:
 
-                                            tempUp.GetComponent<TextMeshProUGUI>().text = "3";
-                                            text.text = "variable changed";
+                                            tempUp.GetComponentInChildren<TextMeshProUGUI>().text = "var";
+                                            text.text = "var=3";
                                             break;
                                         case 2:
-                                            tempDown.GetComponent<TextMeshProUGUI>().text = "3";
+                                            tempDown.GetComponentInChildren<TextMeshProUGUI>().text = "var";
 
-                                            text.text = "variable changed";
+                                            text.text = "var=3";
                                             break;
                                     }
                                     break;
@@ -741,18 +779,23 @@ public class scena2 : MonoBehaviour
                                     switch (z)
                                     {
                                         case 0:
+                                            if (CheckObjectPosition("var",tempUp,tempDown)==0)
                                             text.text = "Object not found";
-
+                                            else
+                                            {
+                                                tempUp.GetComponentInChildren<TextMeshProUGUI>().text = "var";
+                                                text.text = "var=1";
+                                            }
                                             break;
                                         case 1:
 
-                                            tempUp.GetComponent<TextMeshProUGUI>().text = "1";
-                                            text.text = "variable changed";
+                                            tempUp.GetComponentInChildren<TextMeshProUGUI>().text = "var";
+                                            text.text = "var=1";
                                             break;
                                         case 2:
-                                            tempDown.GetComponent<TextMeshProUGUI>().text = "1";
+                                            tempDown.GetComponentInChildren<TextMeshProUGUI>().text = "var";
 
-                                            text.text = "variable changed";
+                                            text.text = "var=1";
                                             break;
                                     }
                                     break;
@@ -765,18 +808,23 @@ public class scena2 : MonoBehaviour
                                     switch (z)
                                     {
                                         case 0:
-                                            text.text = "Object not found";
-
+                                            if (CheckObjectPosition("var", tempUp, tempDown) == 0)
+                                                text.text = "Object not found";
+                                            else
+                                            {
+                                                tempUp.GetComponentInChildren<TextMeshProUGUI>().text = "var";
+                                                text.text = "var=2";
+                                            }
                                             break;
                                         case 1:
 
-                                            tempUp.GetComponent<TextMeshProUGUI>().text = "2";
-                                            text.text = "variable changed";
+                                            tempUp.GetComponentInChildren<TextMeshProUGUI>().text = "var";
+                                            text.text = "var=2";
                                             break;
                                         case 2:
-                                            tempDown.GetComponent<TextMeshProUGUI>().text = "2";
+                                            tempDown.GetComponentInChildren<TextMeshProUGUI>().text = "var";
 
-                                            text.text = "variable changed";
+                                            text.text = "var=2";
                                             break;
                                     }
                                     break;
@@ -882,26 +930,28 @@ public class scena2 : MonoBehaviour
 
                     break;
                 case "book1":
-                    if (modified == false)
+                    if (modified1 == false)
                     {
                         cnt += Time.deltaTime;
                         gaze.fillAmount = cnt / time;
                         if (gaze.fillAmount == 1)
                         {
                             explored.Set(1, true);
-                            modified = true;
+                            modified1 = true;
                             //img2.fillAmount = 1f;
                             cnt = 0;
                             gaze.fillAmount = 0;
                             libro = Instantiate(prefablibro2, img.transform.position, img.transform.rotation);
                             GetComponent<CharacterController>().minMoveDistance = 1000f;
+                            invisible = GameObject.Find("invisible");
+                            invisible.SetActive(false);
                         }
 
                     }
                     break;
 
                 case "book":
-                    if (modified == false)
+                    if (modified1 == false)
                     {
                         cnt += Time.deltaTime;
                         gaze.fillAmount = cnt / time;
@@ -909,12 +959,14 @@ public class scena2 : MonoBehaviour
                         {
                             Debug.Log("esplorabili ++");
                             explored.Set(0, true);
-                            modified = true;
+                            modified1 = true;
                             //img2.fillAmount = 1f;
                             cnt = 0;
                             gaze.fillAmount = 0;
                             libro = Instantiate(prefablibro1, img.transform.position, img.transform.rotation);
                             GetComponent<CharacterController>().minMoveDistance = 1000f;
+                            invisible = GameObject.Find("invisible");
+                            invisible.SetActive(false);
                         }
 
                     }
@@ -926,7 +978,10 @@ public class scena2 : MonoBehaviour
                     if (gaze.fillAmount == 1)
                     {
                         Destroy(libro);
-                        modified = false;
+                        modified1 = false;
+                        if (sceneInfo.actualscene==1)
+                       invisible.SetActive(true);
+                        invisible = null;
                         GetComponent<CharacterController>().minMoveDistance = 0.001f;
                         cnt = 0;
                         gaze.fillAmount = 0;
@@ -963,9 +1018,25 @@ public class scena2 : MonoBehaviour
         if ((tagged == "Ladder" && tagged1 == "Int") || (tagged1 == "Ladder" && tagged == "Int"))
         {
             ButtonRoutine(a1, "Ladder ladder = new Ladder()", "buttonKey");
-            ButtonRoutine(a2, "ladder.length(var)", "buttonKey");
+            // ButtonRoutine(a2, "ladder.length(var)", "buttonKey");
             ButtonRoutine(a3, "Int var = 2", "buttonKey");
             ButtonRoutine(a4, "Int var = 1", "buttonKey");
+            a2.gameObject.SetActive(false);
+            a5.gameObject.SetActive(false);
+            a6.gameObject.SetActive(false);
+            a7.gameObject.SetActive(false);
+            a8.gameObject.SetActive(false);
+            a9.gameObject.SetActive(false);
+            a10.gameObject.SetActive(false);
+            a11.gameObject.SetActive(false);
+            a12.gameObject.SetActive(false);
+        }
+        else if ((tagged == "ladder" && tagged1 == "var") || (tagged1 == "ladder" && tagged == "var")) {
+            ButtonRoutine(a1, "ladder.length(var)", "buttonKey");
+            // ButtonRoutine(a2, "ladder.length(var)", "buttonKey");
+            ButtonRoutine(a3, "Int var = 2", "buttonKey");
+            ButtonRoutine(a4, "Int var = 1", "buttonKey");
+            a2.gameObject.SetActive(false);
             a5.gameObject.SetActive(false);
             a6.gameObject.SetActive(false);
             a7.gameObject.SetActive(false);
@@ -1007,7 +1078,7 @@ public class scena2 : MonoBehaviour
             a11.gameObject.SetActive(false);
             a12.gameObject.SetActive(false);
         }
-        else if( tagged == "Int" || tagged1 == "Int")
+        else if (tagged == "Int" || tagged1 == "Int")
         {
             ButtonRoutine(a3, "Int var = 2", "buttonKey");
             ButtonRoutine(a4, "Int var = 1", "buttonKey");
@@ -1291,6 +1362,9 @@ public class scena2 : MonoBehaviour
                     namevar1 = "Ladder";
                     sceneInfo.hasLadder = true;
                     break;
+                case "height":
+                    namevar1 = "height";
+                    break;
                 default:
                     namevar1 = "";
                     break;
@@ -1337,10 +1411,11 @@ public class scena2 : MonoBehaviour
                 o.transform.localScale = slot1.localScale /5.5f;
                 o.transform.position = new Vector3 (o.transform.position.x, o.transform.position.y-10, o.transform.position.z);
                 break;
-            case "height": 
-                o.transform.rotation = new Quaternion(90, 0,45,o.transform.rotation.w);
-                o.transform.localScale = slot1.localScale/2f;
-                o.transform.position = new Vector3(o.transform.position.x, o.transform.position.y - 10, o.transform.position.z);
+            case "height":
+                GameObject i = GameObject.Find("height");
+                o.transform.rotation = i.transform.rotation;
+                o.transform.localScale = i.transform.localScale*130;
+                o.transform.position = i.transform.position;
 
                 break;
             default:

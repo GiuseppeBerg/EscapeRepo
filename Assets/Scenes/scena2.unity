@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.11225932, g: 0.09875394, b: 0.093461566, a: 1}
+  m_IndirectSpecularColor: {r: 0.5019536, g: 0.5019536, b: 0.5019536, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -555,22 +555,11 @@ MonoBehaviour:
   portasx: {fileID: 1372496836211940}
   monitor: {fileID: 0}
   portadx: {fileID: 1912359896659794}
-  a1: {fileID: 0}
-  a2: {fileID: 1247243451}
-  a3: {fileID: 1406257358}
-  a4: {fileID: 1293183869}
-  a5: {fileID: 900975467}
-  a6: {fileID: 1420487479}
-  a7: {fileID: 830322192}
-  a8: {fileID: 396194074}
-  a9: {fileID: 2127268091}
-  a10: {fileID: 1717005355}
-  a11: {fileID: 910380531}
-  a12: {fileID: 2012369083}
   spawner: {fileID: 0}
   libro: {fileID: 0}
   prefablibro1: {fileID: 0}
   prefablibro2: {fileID: 0}
+  prefablibro3: {fileID: 0}
   key: {fileID: 6202248377633566000, guid: 609cad5eb478dd849beaf2705286bdf7, type: 3}
   resetted: {fileID: 0}
   ladder: {fileID: 100014, guid: 7bade91c709d500478a3cdaa697994d7, type: 3}
@@ -581,6 +570,10 @@ MonoBehaviour:
   slot1: {fileID: 1093602531}
   c: {fileID: 0}
   c1: {fileID: 0}
+  tmp: {fileID: 0}
+  scala1: {fileID: 0}
+  scala2: {fileID: 0}
+  scala3: {fileID: 0}
 --- !u!4 &123037383 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5192765726048654008, guid: 3fb452f5506d2b141b2b92960bc75ae9, type: 3}
@@ -7292,8 +7285,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.3231627, y: 1, z: 0.06939172}
-  m_Center: {x: -0.16158192, y: 0.0000030100668, z: -0.009446563}
+  m_Size: {x: 1.3231627, y: 1, z: 0.113359645}
+  m_Center: {x: -0.16158192, y: 0.0000030100664, z: -0.03143054}
 --- !u!114 &1293183868
 MonoBehaviour:
   m_ObjectHideFlags: 0

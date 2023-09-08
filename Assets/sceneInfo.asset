@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isnextscene: 0
   hasKey: 0
-  scene: 3
-  lunghezzascala: 2
+  scene: 1
+  lunghezzascala: 0
   var: 0
-  inventory: 1
+  inventory: 0
   inventoryObject: {fileID: 0}
   inventoryObject2: {fileID: 0}
   hasLadder: 0
-  actualscene: 3
+  actualscene: 1
   v: 0
   changed: 0
   lvpassed: 0

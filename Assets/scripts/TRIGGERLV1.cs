@@ -16,13 +16,17 @@ public class TRIGGERLV1 : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        sceneInfo.changed = true;
+        sceneInfo.actualscene = 3;
+        sceneInfo.lvpassed = true;
         player.SetActive(false);
         player.transform.position = new Vector3(-330.28f, -6.23f, 21.13f);
         camera.transform.position = new Vector3(camera.transform.position.x, camera.transform.position.y+0.8f, camera.transform.position.z);
         player.SetActive(true);
-        sceneInfo.changed = true;
-        sceneInfo.actualscene = 3;
-        sceneInfo.lvpassed = true;
+        
+
+
         SceneManager.LoadScene("scene3");
+       
     }
 }

@@ -22,5 +22,9 @@ public class sceneInfo : ScriptableObject
         changed = false;
         v= false;
         lvpassed = false;
+        var = 0;
+        hasKey = false;
+        hasLadder = false;
+        lunghezzascala = 0;
     }
 }
