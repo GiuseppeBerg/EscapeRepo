@@ -12,7 +12,7 @@ public class sceneInfo : ScriptableObject
     public GameObject inventoryObject, inventoryObject2 ;
     public bool hasLadder = false;
     public int actualscene = 1;
-    public bool v,changed,lvpassed = false;
+    public bool v,changed,lvpassed,laddervar,ladder,varint,intin,keyvar,key,color,none,window,placed,nn = false;
     private void OnEnable()
     {
         isnextscene = false;

@@ -21,7 +21,17 @@ MonoBehaviour:
   inventoryObject: {fileID: 0}
   inventoryObject2: {fileID: 0}
   hasLadder: 0
-  actualscene: 1
+  actualscene: 2
   v: 0
   changed: 0
   lvpassed: 0
+  laddervar: 0
+  ladder: 0
+  varint: 0
+  intin: 0
+  keyvar: 1
+  key: 0
+  color: 0
+  none: 0
+  window: 0
+  placed: 1

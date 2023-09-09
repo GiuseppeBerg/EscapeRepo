@@ -22,6 +22,7 @@ TagManager:
   - ladder
   - book3
   - place
+  - trash
   layers:
   - Default
   - TransparentFX

@@ -47,7 +47,7 @@ public class scena2 : MonoBehaviour
     private Animator cabinanimatorsx,openandclose1;
     public GameObject monitor;
     public GameObject portadx;
-    private Button a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12;
+    
 
     public GameObject spawner,libro,prefablibro1,prefablibro2,prefablibro3;
     private Vector3 Pos;
@@ -138,33 +138,8 @@ public class scena2 : MonoBehaviour
             text.text = "";
             tempUp = null; tempDown = null;
 
-            a1 = GameObject.Find("Button").GetComponent<Button>();
-            a2 = GameObject.Find("Button (1)").GetComponent<Button>();
-            a3 = GameObject.Find("Button (2)").GetComponent<Button>();
-            a4 = GameObject.Find("Button (4)").GetComponent<Button>();
-            a5 = GameObject.Find("Button (5)").GetComponent<Button>();
-            a6 = GameObject.Find("Button (6)").GetComponent<Button>();
-            a7 = GameObject.Find("Button (8)").GetComponent<Button>();
-            a8 = GameObject.Find("Button (10)").GetComponent<Button>();
-            a9 = GameObject.Find("Button (12)").GetComponent<Button>();
-            a10 = GameObject.Find("Button (9)").GetComponent<Button>();
-            a11 = GameObject.Find("Button (11)").GetComponent<Button>();
-            a12 = GameObject.Find("Button (13)").GetComponent<Button>();
             spawner = GameObject.Find("GlassTank");
             monitor = GameObject.Find("ScreenDisplay");
-
-            a1.gameObject.SetActive(false);
-            a2.gameObject.SetActive(false);
-            a3.gameObject.SetActive(false);
-            a4.gameObject.SetActive(false);
-            a5.gameObject.SetActive(false);
-            a6.gameObject.SetActive(false);
-            a7.gameObject.SetActive(false);
-            a8.gameObject.SetActive(false);
-            a9.gameObject.SetActive(false);
-            a10.gameObject.SetActive(false);
-            a11.gameObject.SetActive(false);
-            a12.gameObject.SetActive(false);
 
             portadx = GameObject.Find("CabinetDoorR");
             portasx = GameObject.Find("CabinetDoorL");
@@ -263,8 +238,7 @@ public class scena2 : MonoBehaviour
                         space2= list[3];
 
                         //Destroy(objecthit.gameObject);
-                        objecthit.gameObject.SetActive(false);
-                       
+                      
                        
                         cnt = 0;
                         gaze.fillAmount = 0;
@@ -485,6 +459,7 @@ public class scena2 : MonoBehaviour
                             text.text = "ready to assign";
                             modified = true;
                             tagged1 = pretext;
+                            sceneInfo.placed = true;
                         }
                     }
                     else if (dist < 15 && placed == true)
@@ -504,12 +479,14 @@ public class scena2 : MonoBehaviour
                                 tempDown.SetActive(false);
                                 tempDown = null;
                                 
-                                placed = false;
+                               
                                 tagged1 = "default";
                                 cnt = 0;
                                 gaze.fillAmount = 0;
                                 text.text = "object obtained";
                                 modified = true;
+                                sceneInfo.placed = true;
+                                placed = false;
                             }
                             else
                             {
@@ -576,7 +553,7 @@ public class scena2 : MonoBehaviour
                                 tempUp.gameObject.transform.position = new Vector3(tempUp.transform.position.x, tempUp.transform.position.y , tempUp.transform.position.z);
                                 tempUp.gameObject.transform.rotation = new Quaternion(tempUp.transform.rotation.x, tempUp.transform.rotation.y+180 , tempUp.transform.rotation.z-90, tempUp.transform.rotation.w);
                             }
-
+                            sceneInfo.placed = true;
                             placed2 = true;
                             cnt = 0;
                             gaze.fillAmount = 0;
@@ -603,12 +580,14 @@ public class scena2 : MonoBehaviour
                                tempUp.SetActive(false);
                                 tempUp = null;
 
-                                placed2 = false;
+                               
                                 tagged = "default";
                                 cnt = 0;
                                 gaze.fillAmount = 0;
                                 text.text = "object obtained";
                                 modified = true;
+                                sceneInfo.placed = true;
+                                placed2 = false;
                             }
                             else
                             {
@@ -664,7 +643,7 @@ public class scena2 : MonoBehaviour
                         {
                             switch (objecthit.gameObject.GetComponentInChildren<TextMeshProUGUI>().text)
                             {
-                                case "Key k= new Key();":
+                                case "Key k= new Key()":
                                     z = CheckObjectPosition("Key", tempUp, tempDown);
                                     switch (z)
                                     {
@@ -674,12 +653,12 @@ public class scena2 : MonoBehaviour
                                             break;
                                         case 1:
                                             tempUp = ReplaceObject(key, tempUp);
-                                            
+                                            tagged = tempUp.GetComponentInChildren<TextMeshProUGUI>().text;
                                             text.text = "object created";
                                             break;
                                         case 2:
                                             tempDown = ReplaceObject(key, tempDown);
-                                            
+                                            tagged1 = tempDown.GetComponentInChildren<TextMeshProUGUI>().text;
                                             text.text = "object created";
                                             break;
                                         default:
@@ -702,14 +681,14 @@ public class scena2 : MonoBehaviour
                                             tempUp = ReplaceObject(ladder, tempUp);
                                             tempUp.gameObject.transform.localScale = new Vector3(0.16f, 0.16f, 0.16f);
                                             tempUp.gameObject.transform.position = new Vector3(tempUp.transform.position.x, tempUp.transform.position.y - 0.25f, tempUp.transform.position.z);
-                                            
+                                            tagged = tempUp.GetComponentInChildren<TextMeshProUGUI>().text;
                                             text.text = "object created";
                                             break;
                                         case 2:
                                             tempDown = ReplaceObject(ladder, tempDown);
                                             tempDown.gameObject.transform.localScale = new Vector3(0.16f, 0.16f, 0.16f);
                                             tempDown.gameObject.transform.position = new Vector3(tempDown.transform.position.x, tempDown.transform.position.y - 0.25f, tempDown.transform.position.z);
-                                            
+                                            tagged1 = tempDown.GetComponentInChildren<TextMeshProUGUI>().text;
                                             text.text = "object created";
                                             break;
                                         default:
@@ -718,7 +697,7 @@ public class scena2 : MonoBehaviour
                                     }
                                     break;
 
-                                case "ladder.length(var)":
+                                case "ladder.SetHeight(var)":
                                     z = CheckObjectPosition("ladder", tempUp, tempDown);
                                     if (z == 0) text.text = "there is no ladder,/n assign the variable first";
                                     else
@@ -750,7 +729,7 @@ public class scena2 : MonoBehaviour
                                     break;
 
 
-                                case "Int var = Window.height": sceneInfo.var = 3;
+                                case "Int var= window.GetHeight()": sceneInfo.var = 3;
                                     
                                     z = CheckObjectPosition("Int", tempUp, tempDown);
                                     switch (z)
@@ -763,17 +742,18 @@ public class scena2 : MonoBehaviour
 
                                             tempUp.GetComponentInChildren<TextMeshProUGUI>().text = "var";
                                             text.text = "var=3";
+                                            tagged = tempUp.GetComponentInChildren<TextMeshProUGUI>().text;
                                             break;
                                         case 2:
                                             tempDown.GetComponentInChildren<TextMeshProUGUI>().text = "var";
-
+                                            tagged1 = tempDown.GetComponentInChildren<TextMeshProUGUI>().text;
                                             text.text = "var=3";
                                             break;
                                     }
                                     break;
 
 
-                                case "Int var = 1":
+                                case "Int var=1":
                                     sceneInfo.var = 1;
                                     z = CheckObjectPosition("Int", tempUp, tempDown);
                                     switch (z)
@@ -781,20 +761,27 @@ public class scena2 : MonoBehaviour
                                         case 0:
                                             if (CheckObjectPosition("var",tempUp,tempDown)==0)
                                             text.text = "Object not found";
-                                            else
+                                            else if (CheckObjectPosition("var", tempUp, tempDown) == 1) 
                                             {
                                                 tempUp.GetComponentInChildren<TextMeshProUGUI>().text = "var";
                                                 text.text = "var=1";
+                                                tagged = tempUp.GetComponentInChildren<TextMeshProUGUI>().text;
+                                            }else if (CheckObjectPosition("var", tempUp, tempDown) == 2)
+                                            {
+                                                tempDown.GetComponentInChildren<TextMeshProUGUI>().text = "var";
+                                                text.text = "var=1";
+                                                tagged1 = tempDown.GetComponentInChildren<TextMeshProUGUI>().text;
                                             }
                                             break;
                                         case 1:
 
                                             tempUp.GetComponentInChildren<TextMeshProUGUI>().text = "var";
                                             text.text = "var=1";
+                                            tagged = tempUp.GetComponentInChildren<TextMeshProUGUI>().text;
                                             break;
                                         case 2:
                                             tempDown.GetComponentInChildren<TextMeshProUGUI>().text = "var";
-
+                                            tagged1 = tempDown.GetComponentInChildren<TextMeshProUGUI>().text;
                                             text.text = "var=1";
                                             break;
                                     }
@@ -802,7 +789,7 @@ public class scena2 : MonoBehaviour
 
 
 
-                                case "Int var = 2":
+                                case "Int var=2":
                                     sceneInfo.var = 2;
                                     z = CheckObjectPosition("Int", tempUp, tempDown);
                                     switch (z)
@@ -810,20 +797,28 @@ public class scena2 : MonoBehaviour
                                         case 0:
                                             if (CheckObjectPosition("var", tempUp, tempDown) == 0)
                                                 text.text = "Object not found";
-                                            else
+                                            else if (CheckObjectPosition("var", tempUp, tempDown) == 1)
                                             {
                                                 tempUp.GetComponentInChildren<TextMeshProUGUI>().text = "var";
                                                 text.text = "var=2";
+                                                tagged = tempUp.GetComponentInChildren<TextMeshProUGUI>().text;
+                                            }
+                                            else if (CheckObjectPosition("var", tempUp, tempDown) == 2)
+                                            {
+                                                tempDown.GetComponentInChildren<TextMeshProUGUI>().text = "var";
+                                                text.text = "var=2";
+                                                tagged1 = tempDown.GetComponentInChildren<TextMeshProUGUI>().text;
                                             }
                                             break;
                                         case 1:
 
                                             tempUp.GetComponentInChildren<TextMeshProUGUI>().text = "var";
                                             text.text = "var=2";
+                                            tagged = tempUp.GetComponentInChildren<TextMeshProUGUI>().text;
                                             break;
                                         case 2:
                                             tempDown.GetComponentInChildren<TextMeshProUGUI>().text = "var";
-
+                                            tagged1 = tempDown.GetComponentInChildren<TextMeshProUGUI>().text;
                                             text.text = "var=2";
                                             break;
                                     }
@@ -833,11 +828,12 @@ public class scena2 : MonoBehaviour
                             }
                             cnt = 0;
                             gaze.fillAmount = 0;
-
+                            sceneInfo.placed = true;
                             modified = true;
                             monitor.GetComponent<Animator>().Play("MonitorOff");
                             open2 = false;
-                            tagged = "default";
+                            
+                           // tagged = "default";
 
                         }
                     }
@@ -988,7 +984,24 @@ public class scena2 : MonoBehaviour
 
                     }
                     break;
-
+                case "trash":
+                    if (sceneInfo.inventory > 0)
+                    {
+                        cnt += Time.deltaTime;
+                        gaze.fillAmount = cnt / time;
+                        if (gaze.fillAmount == 1)
+                        {
+                            GameObject[] list = new GameObject[4];
+                            list = Put(c, c1, space1, space2);
+                            c = list[0];
+                            c1 = list[1];
+                            space1 = list[2];
+                            space2 = list[3];
+                            cnt = 0;
+                            gaze.fillAmount = 0;
+                        }
+                    }
+                    break;
 
 
                 default:
@@ -1014,187 +1027,221 @@ public class scena2 : MonoBehaviour
             text.color = new Color(text.color.r, text.color.g, text.color.b, 1);
             modified = false;
         }
-
-        if ((tagged == "Ladder" && tagged1 == "Int") || (tagged1 == "Ladder" && tagged == "Int"))
-        {
-            ButtonRoutine(a1, "Ladder ladder = new Ladder()", "buttonKey");
-            // ButtonRoutine(a2, "ladder.length(var)", "buttonKey");
-            ButtonRoutine(a3, "Int var = 2", "buttonKey");
-            ButtonRoutine(a4, "Int var = 1", "buttonKey");
-            a2.gameObject.SetActive(false);
-            a5.gameObject.SetActive(false);
-            a6.gameObject.SetActive(false);
-            a7.gameObject.SetActive(false);
-            a8.gameObject.SetActive(false);
-            a9.gameObject.SetActive(false);
-            a10.gameObject.SetActive(false);
-            a11.gameObject.SetActive(false);
-            a12.gameObject.SetActive(false);
-        }
-        else if ((tagged == "ladder" && tagged1 == "var") || (tagged1 == "ladder" && tagged == "var")) {
-            ButtonRoutine(a1, "ladder.length(var)", "buttonKey");
-            // ButtonRoutine(a2, "ladder.length(var)", "buttonKey");
-            ButtonRoutine(a3, "Int var = 2", "buttonKey");
-            ButtonRoutine(a4, "Int var = 1", "buttonKey");
-            a2.gameObject.SetActive(false);
-            a5.gameObject.SetActive(false);
-            a6.gameObject.SetActive(false);
-            a7.gameObject.SetActive(false);
-            a8.gameObject.SetActive(false);
-            a9.gameObject.SetActive(false);
-            a10.gameObject.SetActive(false);
-            a11.gameObject.SetActive(false);
-            a12.gameObject.SetActive(false);
-        }
-        else if ((tagged == "Ladder" || tagged1 == "Ladder"))//&& (tagged == "default" || tagged1 == "default"))
-        {
-            ButtonRoutine(a1, "Ladder ladder = new Ladder()", "buttonKey");
-            a2.gameObject.SetActive(false);
-            a3.gameObject.SetActive(false);
-            a4.gameObject.SetActive(false);
-            a5.gameObject.SetActive(false);
-            a6.gameObject.SetActive(false);
-            a7.gameObject.SetActive(false);
-            a8.gameObject.SetActive(false);
-            a9.gameObject.SetActive(false);
-            a10.gameObject.SetActive(false);
-            a11.gameObject.SetActive(false);
-            a12.gameObject.SetActive(false);
-
-        }
-        else if ((tagged == "Int" || tagged1 == "Int") && (tagged == "Window" || tagged1 == "Window"))//&& tagged == "default" || tagged1 == "default")
-        {
-            ButtonRoutine(a3, "Int var = 2", "buttonKey");
-            ButtonRoutine(a4, "Int var = 1", "buttonKey");
-            ButtonRoutine(a1, "Int var = Window.height", "buttonKey");
-            a2.gameObject.SetActive(false);
-
-            a5.gameObject.SetActive(false);
-            a6.gameObject.SetActive(false);
-            a7.gameObject.SetActive(false);
-            a8.gameObject.SetActive(false);
-            a9.gameObject.SetActive(false);
-            a10.gameObject.SetActive(false);
-            a11.gameObject.SetActive(false);
-            a12.gameObject.SetActive(false);
-        }
-        else if (tagged == "Int" || tagged1 == "Int")
-        {
-            ButtonRoutine(a3, "Int var = 2", "buttonKey");
-            ButtonRoutine(a4, "Int var = 1", "buttonKey");
-            a1.gameObject.SetActive(false);
-            a2.gameObject.SetActive(false);
-
-            a5.gameObject.SetActive(false);
-            a6.gameObject.SetActive(false);
-            a7.gameObject.SetActive(false);
-            a8.gameObject.SetActive(false);
-            a9.gameObject.SetActive(false);
-            a10.gameObject.SetActive(false);
-            a11.gameObject.SetActive(false);
-            a12.gameObject.SetActive(false);
-        }
-
-            if ((tagged == "Key" && tagged1 == "Color" ) || (tagged1 == "Key" && tagged == "Color"))
-        {
-            ButtonRoutine(a1, "Key k= new Key();", "buttonKey");
-            ButtonRoutine(a2, "k.MaterialColor(color)", "buttonKey");
-            ButtonRoutine(a3, "Color color= new Color('Red')", "buttonKey");
-            ButtonRoutine(a4, "Color color= new Color('Green')","buttonKey");
-            a5.gameObject.SetActive(false);
-            a6.gameObject.SetActive(false);
-            a7.gameObject.SetActive(false);
-            a8.gameObject.SetActive(false);
-            a9.gameObject.SetActive(false);
-            a10.gameObject.SetActive(false);
-            a11.gameObject.SetActive(false);
-            a12.gameObject.SetActive(false);
-        }
-         else
-        if (tagged=="Color" || tagged1 == "Color")// && tagged == "default" || tagged1 == "default")
-        {
-            ButtonRoutine(a3, "Color color= new Color('Red')", "buttonKey");
-            ButtonRoutine(a4, "Color color= new Color('Green')", "buttonKey");
-            a1.gameObject.SetActive(false);
-            a2.gameObject.SetActive(false);
-
-            a5.gameObject.SetActive(false);
-            a6.gameObject.SetActive(false);
-            a7.gameObject.SetActive(false);
-            a8.gameObject.SetActive(false);
-            a9.gameObject.SetActive(false);
-            a10.gameObject.SetActive(false);
-            a11.gameObject.SetActive(false);
-            a12.gameObject.SetActive(false);
-        }
-        else
-       
-        if (tagged == "Key" || tagged1 == "Key")// && tagged == "default" || tagged1 == "default")
-        {
-            ButtonRoutine(a1, "Key k= new Key();", "buttonKey");
-            a2.gameObject.SetActive(false);
-            a3.gameObject.SetActive(false);
-            a4.gameObject.SetActive(false);
-            a5.gameObject.SetActive(false);
-            a6.gameObject.SetActive(false);
-            a7.gameObject.SetActive(false);
-            a8.gameObject.SetActive(false);
-            a9.gameObject.SetActive(false);
-            a10.gameObject.SetActive(false);
-            a11.gameObject.SetActive(false);
-            a12.gameObject.SetActive(false);
-        }
-      
         if (tagged == "default" && tagged1 == "default")
+            sceneInfo.nn = true;
+        else
+        if (tagged == "default" || tagged1 == "default")
+            sceneInfo.none = true;
+        else
         {
-            a1.gameObject.SetActive(false);
-            a2.gameObject.SetActive(false);
-            a3.gameObject.SetActive(false);
-            a4.gameObject.SetActive(false);
-            a5.gameObject.SetActive(false);
-            a6.gameObject.SetActive(false);
-            a7.gameObject.SetActive(false);
-            a8.gameObject.SetActive(false);
-            a9.gameObject.SetActive(false);                
-            a10.gameObject.SetActive(false);
-            a11.gameObject.SetActive(false);
-            a12.gameObject.SetActive(false);              
-            
+            sceneInfo.nn = false;
+            sceneInfo.none = false;
         }
-            /*
-            switch (tagged)
-            {
-                case ("Key"):
-                    ButtonRoutine(a1, "Key var= new Key()", "buttonKey");
+        if (tagged == "ladder" || tagged1 == "ladder")
+            sceneInfo.ladder = true;
+        else sceneInfo.ladder = false;
+        if (tagged == "Ladder" || tagged1 == "Ladder")
+            sceneInfo.laddervar = true;
+        else sceneInfo.laddervar = false;
+        if (tagged == "Int" || tagged1 == "Int")
+            sceneInfo.intin = true;
+        else sceneInfo.intin = false;
+        if (tagged == "var" || tagged1 == "var")
+            sceneInfo.varint = true;
+        else sceneInfo.varint = false;
+        if (tagged == "Key" || tagged1 == "Key")
+            sceneInfo.keyvar = true;
+        else sceneInfo.keyvar = false;
+        if (tagged == "key" || tagged1 == "key")
+            sceneInfo.key = true;
+        else sceneInfo.key = false;
+        if (tagged == "Color" || tagged1 == "Color")
+            sceneInfo.color = true;
+        else sceneInfo.color = false;
+        if (tagged == "Window" || tagged1 == "Window")
+            sceneInfo.window = true;
+        else sceneInfo.window = false;
+        /* if ((tagged == "Ladder" && tagged1 == "Int") || (tagged1 == "Ladder" && tagged == "Int"))
+         {
+             ButtonRoutine(a1, "Ladder ladder = new Ladder()", "buttonKey");
+             // ButtonRoutine(a2, "ladder.length(var)", "buttonKey");
+             ButtonRoutine(a3, "Int var = 2", "buttonKey");
+             ButtonRoutine(a4, "Int var = 1", "buttonKey");
+             a2.gameObject.SetActive(false);
+             a5.gameObject.SetActive(false);
+             a6.gameObject.SetActive(false);
+             a7.gameObject.SetActive(false);
+             a8.gameObject.SetActive(false);
+             a9.gameObject.SetActive(false);
+             a10.gameObject.SetActive(false);
+             a11.gameObject.SetActive(false);
+             a12.gameObject.SetActive(false);
+         }
+         else if ((tagged == "ladder" && tagged1 == "var") || (tagged1 == "ladder" && tagged == "var")) {
+             ButtonRoutine(a1, "ladder.length(var)", "buttonKey");
+             // ButtonRoutine(a2, "ladder.length(var)", "buttonKey");
+             ButtonRoutine(a3, "Int var = 2", "buttonKey");
+             ButtonRoutine(a4, "Int var = 1", "buttonKey");
+             a2.gameObject.SetActive(false);
+             a5.gameObject.SetActive(false);
+             a6.gameObject.SetActive(false);
+             a7.gameObject.SetActive(false);
+             a8.gameObject.SetActive(false);
+             a9.gameObject.SetActive(false);
+             a10.gameObject.SetActive(false);
+             a11.gameObject.SetActive(false);
+             a12.gameObject.SetActive(false);
+         }
+         else if ((tagged == "Ladder" || tagged1 == "Ladder"))//&& (tagged == "default" || tagged1 == "default"))
+         {
+             ButtonRoutine(a1, "Ladder ladder = new Ladder()", "buttonKey");
+             a2.gameObject.SetActive(false);
+             a3.gameObject.SetActive(false);
+             a4.gameObject.SetActive(false);
+             a5.gameObject.SetActive(false);
+             a6.gameObject.SetActive(false);
+             a7.gameObject.SetActive(false);
+             a8.gameObject.SetActive(false);
+             a9.gameObject.SetActive(false);
+             a10.gameObject.SetActive(false);
+             a11.gameObject.SetActive(false);
+             a12.gameObject.SetActive(false);
 
-                    break;
-                case ("Ladder"):
-                    ButtonRoutine(a1, "Ladder ladder = new Ladder(1)", "buttonKey");
-                    if (tagged1 == "Int") ButtonRoutine(a2, "ladder.length(var)", "buttonKey");
-                    if (tagged1 =="Color") ButtonRoutine(a3, "ladder.color(color)", "buttonKey");
-                    break;
-                case ("Int"):
-                    ButtonRoutine(a1, "Int var= 2", "buttonKey");
-                    break;
-                default:
-                   a1.gameObject.SetActive(false);
-                    a2.gameObject.SetActive(false);
+         }
+         else if ((tagged == "Int" || tagged1 == "Int") && (tagged == "Window" || tagged1 == "Window"))//&& tagged == "default" || tagged1 == "default")
+         {
+             ButtonRoutine(a3, "Int var = 2", "buttonKey");
+             ButtonRoutine(a4, "Int var = 1", "buttonKey");
+             ButtonRoutine(a1, "Int var = Window.height", "buttonKey");
+             a2.gameObject.SetActive(false);
 
-                    break;
-            }
-            */
+             a5.gameObject.SetActive(false);
+             a6.gameObject.SetActive(false);
+             a7.gameObject.SetActive(false);
+             a8.gameObject.SetActive(false);
+             a9.gameObject.SetActive(false);
+             a10.gameObject.SetActive(false);
+             a11.gameObject.SetActive(false);
+             a12.gameObject.SetActive(false);
+         }
+         else if (tagged == "Int" || tagged1 == "Int")
+         {
+             ButtonRoutine(a3, "Int var = 2", "buttonKey");
+             ButtonRoutine(a4, "Int var = 1", "buttonKey");
+             a1.gameObject.SetActive(false);
+             a2.gameObject.SetActive(false);
 
-            /*-------------------------------------------------------------------------------
-             * -------------------------------------------------------------------------------
-             * -----------------------------------------------------------------------------*/
+             a5.gameObject.SetActive(false);
+             a6.gameObject.SetActive(false);
+             a7.gameObject.SetActive(false);
+             a8.gameObject.SetActive(false);
+             a9.gameObject.SetActive(false);
+             a10.gameObject.SetActive(false);
+             a11.gameObject.SetActive(false);
+             a12.gameObject.SetActive(false);
+         }
 
-            //-------------------------------------------------------------------------------//
-            //-------------------------------------------------------------------------------//
-            //-------------------------------------------------------------------------------//
-            //-------------------------------------------------------------------------------//
-            //-------------------------------CHARACTER CONTROLLER------------------------------//
+             if ((tagged == "Key" && tagged1 == "Color" ) || (tagged1 == "Key" && tagged == "Color"))
+         {
+             ButtonRoutine(a1, "Key k= new Key();", "buttonKey");
+             ButtonRoutine(a2, "k.MaterialColor(color)", "buttonKey");
+             ButtonRoutine(a3, "Color color= new Color('Red')", "buttonKey");
+             ButtonRoutine(a4, "Color color= new Color('Green')","buttonKey");
+             a5.gameObject.SetActive(false);
+             a6.gameObject.SetActive(false);
+             a7.gameObject.SetActive(false);
+             a8.gameObject.SetActive(false);
+             a9.gameObject.SetActive(false);
+             a10.gameObject.SetActive(false);
+             a11.gameObject.SetActive(false);
+             a12.gameObject.SetActive(false);
+         }
+          else
+         if (tagged=="Color" || tagged1 == "Color")// && tagged == "default" || tagged1 == "default")
+         {
+             ButtonRoutine(a3, "Color color= new Color('Red')", "buttonKey");
+             ButtonRoutine(a4, "Color color= new Color('Green')", "buttonKey");
+             a1.gameObject.SetActive(false);
+             a2.gameObject.SetActive(false);
 
-            isGrounded = Physics.CheckSphere(groundCheckTransform.position, 0.3f, playerMask);
+             a5.gameObject.SetActive(false);
+             a6.gameObject.SetActive(false);
+             a7.gameObject.SetActive(false);
+             a8.gameObject.SetActive(false);
+             a9.gameObject.SetActive(false);
+             a10.gameObject.SetActive(false);
+             a11.gameObject.SetActive(false);
+             a12.gameObject.SetActive(false);
+         }
+         else
+
+         if (tagged == "Key" || tagged1 == "Key")// && tagged == "default" || tagged1 == "default")
+         {
+             ButtonRoutine(a1, "Key k= new Key();", "buttonKey");
+             a2.gameObject.SetActive(false);
+             a3.gameObject.SetActive(false);
+             a4.gameObject.SetActive(false);
+             a5.gameObject.SetActive(false);
+             a6.gameObject.SetActive(false);
+             a7.gameObject.SetActive(false);
+             a8.gameObject.SetActive(false);
+             a9.gameObject.SetActive(false);
+             a10.gameObject.SetActive(false);
+             a11.gameObject.SetActive(false);
+             a12.gameObject.SetActive(false);
+         }
+
+         if (tagged == "default" && tagged1 == "default")
+         {
+             a1.gameObject.SetActive(false);
+             a2.gameObject.SetActive(false);
+             a3.gameObject.SetActive(false);
+             a4.gameObject.SetActive(false);
+             a5.gameObject.SetActive(false);
+             a6.gameObject.SetActive(false);
+             a7.gameObject.SetActive(false);
+             a8.gameObject.SetActive(false);
+             a9.gameObject.SetActive(false);                
+             a10.gameObject.SetActive(false);
+             a11.gameObject.SetActive(false);
+             a12.gameObject.SetActive(false);              
+
+         }
+        */
+        /*
+        switch (tagged)
+        {
+            case ("Key"):
+                ButtonRoutine(a1, "Key var= new Key()", "buttonKey");
+
+                break;
+            case ("Ladder"):
+                ButtonRoutine(a1, "Ladder ladder = new Ladder(1)", "buttonKey");
+                if (tagged1 == "Int") ButtonRoutine(a2, "ladder.length(var)", "buttonKey");
+                if (tagged1 =="Color") ButtonRoutine(a3, "ladder.color(color)", "buttonKey");
+                break;
+            case ("Int"):
+                ButtonRoutine(a1, "Int var= 2", "buttonKey");
+                break;
+            default:
+               a1.gameObject.SetActive(false);
+                a2.gameObject.SetActive(false);
+
+                break;
+        }
+        */
+
+        /*-------------------------------------------------------------------------------
+         * -------------------------------------------------------------------------------
+         * -----------------------------------------------------------------------------*/
+
+        //-------------------------------------------------------------------------------//
+        //-------------------------------------------------------------------------------//
+        //-------------------------------------------------------------------------------//
+        //-------------------------------------------------------------------------------//
+        //-------------------------------CHARACTER CONTROLLER------------------------------//
+
+        isGrounded = Physics.CheckSphere(groundCheckTransform.position, 0.3f, playerMask);
 
         if (isGrounded && velocity.y < 0) { velocity.y = -2f; }
         //isWalking = animator.GetBool("isWalking");
@@ -1331,7 +1378,7 @@ public class scena2 : MonoBehaviour
                 break;
         }
         string pretext=null;
-        if (namevar=="variabile_chiave")
+       // if (namevar=="variabile_chiave")
          pretext = space1.GetComponentInChildren<TextMeshProUGUI>().text;
 
 
@@ -1370,7 +1417,7 @@ public class scena2 : MonoBehaviour
                     break;
             }
             string pretext1=null;
-            if (namevar1 == "variabile_chiave")
+           // if (namevar1 == "variabile_chiave")
                 pretext1 = space2.GetComponentInChildren<TextMeshProUGUI>().text;
 
             c1 = Instantiate(Resources.Load(namevar1), slot1.position, slot1.rotation, slot1.parent) as GameObject;
@@ -1415,7 +1462,7 @@ public class scena2 : MonoBehaviour
                 GameObject i = GameObject.Find("height");
                 o.transform.rotation = i.transform.rotation;
                 o.transform.localScale = i.transform.localScale*130;
-                o.transform.position = i.transform.position;
+                //o.transform.position = i.transform.position;
 
                 break;
             default:
