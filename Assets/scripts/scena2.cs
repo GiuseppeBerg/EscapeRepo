@@ -339,7 +339,23 @@ public class scena2 : MonoBehaviour
             }
             switch (tag)
             {
-                
+                case "save":
+                    cnt += Time.deltaTime;
+                    gaze.fillAmount = cnt / time;
+                    if (gaze.fillAmount == 1)
+                    {
+                        GameObject[] list= new GameObject[4];
+                        list=Collect(GameObject.Find("conduitsheet"), c, c1, slot1, space1, space2);
+                        c = list[0];
+                        c1= list[1];
+                        space1 = list[2];
+                        space2 = list[3];
+                        cnt = 0;
+                        gaze.fillAmount = 0;
+                     
+                    
+                    }
+                    break;
                 case "place":
                     if (sceneInfo.hasLadder)
                         cnt+= Time.deltaTime;
@@ -1504,6 +1520,9 @@ public class scena2 : MonoBehaviour
             case "height":
                 namevar = "height";
                 break;
+            case "conduitsheet":
+                namevar = "preconduit";
+                break;
             default:
                 namevar = "";
                 break;
@@ -1542,6 +1561,9 @@ public class scena2 : MonoBehaviour
                     break;
                 case "height":
                     namevar1 = "height";
+                    break;
+                case "conduitsheet":
+                    namevar1 = "preconduit";
                     break;
                 default:
                     namevar1 = "";
@@ -1595,6 +1617,11 @@ public class scena2 : MonoBehaviour
                 o.transform.localScale = i.transform.localScale*130;
                 //o.transform.position = i.transform.position;
 
+                break;
+            case "conduitsheet":
+                GameObject e = GameObject.Find("height");
+                o.transform.rotation = e.transform.rotation;
+                o.transform.localScale = e.transform.localScale * 130;
                 break;
             default:
                 o.transform.localScale = slot1.localScale ;

@@ -28,6 +28,7 @@ TagManager:
   - machinesheet
   - writed
   - writed2
+  - save
   layers:
   - Default
   - TransparentFX
