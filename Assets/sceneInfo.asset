@@ -21,7 +21,7 @@ MonoBehaviour:
   inventoryObject: {fileID: 0}
   inventoryObject2: {fileID: 0}
   hasLadder: 0
-  actualscene: 1
+  actualscene: 4
   v: 0
   changed: 0
   lvpassed: 0
@@ -36,3 +36,5 @@ MonoBehaviour:
   window: 0
   placed: 0
   nn: 0
+  scritta1: 0
+  scritta2: 0
