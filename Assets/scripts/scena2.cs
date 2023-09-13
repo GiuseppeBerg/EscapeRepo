@@ -67,7 +67,7 @@ public class scena2 : MonoBehaviour
     public GameObject c, c1, tmp, scala1, scala2, scala3, invisible,spot1,spot2;
     private int pieno;
     private Vector3 t1,t2;
-
+    private string s1, s2;
     // Start is called before the first frame update
     void Start()
     {
@@ -267,7 +267,8 @@ public class scena2 : MonoBehaviour
                         t1 = objecthit.transform.position;
                         objecthit.GetComponent<RectTransform>().position  = spot1.GetComponent<RectTransform>().position;
                         
-                       objecthit.GetComponentInChildren<TextMeshProUGUI>().fontSize = 18;
+                       objecthit.GetComponentInChildren<TextMeshProUGUI>().fontSize = 16;
+                       s1= objecthit.GetComponentInChildren<TextMeshProUGUI>().text;
                         objecthit.gameObject.tag = "writed";
                         pieno++;
                     }
@@ -280,6 +281,7 @@ public class scena2 : MonoBehaviour
                                 objecthit.transform.position = t2;
                                 objecthit.gameObject.tag = "Untagged";
                                 objecthit.GetComponentInChildren<TextMeshProUGUI>().fontSize = 24;
+                                s1 = null; s2=null;
                                 pieno--;
                             }
                             else
@@ -287,7 +289,8 @@ public class scena2 : MonoBehaviour
                                 spot2.SetActive(false);
                                 t2 = objecthit.transform.position;
                                 objecthit.GetComponent<RectTransform>().position = spot2.GetComponent<RectTransform>().position;
-                                objecthit.GetComponentInChildren<TextMeshProUGUI>().fontSize = 18;
+                                objecthit.GetComponentInChildren<TextMeshProUGUI>().fontSize = 16;
+                                s2 = objecthit.GetComponentInChildren<TextMeshProUGUI>().text;
                                 objecthit.gameObject.tag = "writed2";
                                 pieno++;
                             }
@@ -300,6 +303,7 @@ public class scena2 : MonoBehaviour
                             objecthit.GetComponentInChildren<TextMeshProUGUI>().fontSize = 24;
                             objecthit.transform.position = t1;
                             objecthit.gameObject.tag = "Untagged";
+                            s1 = null;
                         }
                     }
                     else
@@ -319,6 +323,7 @@ public class scena2 : MonoBehaviour
                                GameObject.FindWithTag("writed2").transform.position = spot1.GetComponent<RectTransform>().position;
                                 objecthit.gameObject.tag = "Untagged";
                                 objecthit.GetComponentInChildren<TextMeshProUGUI>().fontSize = 24;
+                                s1 = null;
                             }
                             else if (objecthit.gameObject.CompareTag("writed2"))
                             {
@@ -326,6 +331,7 @@ public class scena2 : MonoBehaviour
                                 objecthit.transform.position = t2;
                                 objecthit.gameObject.tag = "Untagged";
                                 objecthit.GetComponentInChildren<TextMeshProUGUI>().fontSize = 24;
+                                s2 = null;
 
                             }
                         }
@@ -344,6 +350,23 @@ public class scena2 : MonoBehaviour
                     gaze.fillAmount = cnt / time;
                     if (gaze.fillAmount == 1)
                     {
+                        if (sceneInfo.ismachine)
+                        {
+                            if ((s1 == "Condition= \"machine.getButton().isPressed()==true\"") || (s2 == "Condition= \"machine.getButton().isPressed()==true\""))
+                                if ((s1== "Statement= \"machine,getGun().setShootingPower(200)\"") || (s2== "Statement= \"machine,getGun().setShootingPower(200)\""))
+                            sceneInfo.rightM = true;
+                            else sceneInfo.rightM = false;
+                            sceneInfo.hasM = true;
+                        }
+
+                        else
+                        {
+                            if ((s1 == "Condition= \"conduit.objectPlaced()== true\"") || (s2 == "Condition= \"conduit.objectPlaced()== true\""))
+                                if ((s1 == "Statement= \"conduit.Push(object)\"") || (s2 == "Statement= \"conduit.Push(object)\"")) 
+                            sceneInfo.rightC = true;
+                            else sceneInfo.rightC= false;
+                            sceneInfo.hasC = true;
+                        }
                         GameObject[] list= new GameObject[4];
                         list=Collect(GameObject.Find("conduitsheet"), c, c1, slot1, space1, space2);
                         c = list[0];
@@ -398,7 +421,10 @@ public class scena2 : MonoBehaviour
                            
                            
                             libro = Instantiate(Resources.Load("ifmachine"), imgmachine.transform.position, imgmachine.transform.rotation) as GameObject;
+                            spot1 = GameObject.Find("condBool (4)");
+                            spot2 = GameObject.Find("condBool (5)");
                             GetComponent<CharacterController>().minMoveDistance = 1000f;
+                            sceneInfo.ismachine = true;
                             cnt = 0;
                             gaze.fillAmount = 0;
                         }
@@ -419,6 +445,7 @@ public class scena2 : MonoBehaviour
                             spot1 = GameObject.Find("condBool (4)");
                             spot2 = GameObject.Find("condBool (5)");
                             GetComponent<CharacterController>().minMoveDistance = 1000f;
+                            sceneInfo.ismachine = false;
                             cnt = 0;
                             gaze.fillAmount = 0;
                         }
@@ -1125,6 +1152,7 @@ public class scena2 : MonoBehaviour
                             invisible = null;
                         }
                         GetComponent<CharacterController>().minMoveDistance = 0.001f;
+                        sceneInfo.ismachine = false;
                         pieno = 0;
                         cnt = 0;
                         gaze.fillAmount = 0;
