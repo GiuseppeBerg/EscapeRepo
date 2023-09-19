@@ -52,7 +52,7 @@ public class scena2 : MonoBehaviour
     public GameObject spawner,libro,prefablibro1,prefablibro2,prefablibro3;
     private Vector3 Pos;
     private Quaternion Rot;
-    private bool interacted, placed,placed2, modified,modified1;
+    public bool interacted, placed,placed2, modified,modified1,scriptmachineright,scriptconduitright,smp,scp,canplace;
     public GameObject key, resetted,ladder;
     private string tagged,tagged1, pretext;
     private int z = 0;
@@ -64,7 +64,7 @@ public class scena2 : MonoBehaviour
     [SerializeField] public sceneInfo sceneInfo;
     public GameObject space1, space2;
     public Transform slot1,place1,place2;
-    public GameObject c, c1, tmp, scala1, scala2, scala3, invisible,spot1,spot2;
+    private GameObject c, c1, tmp, scala1, scala2, scala3, invisible,spot1,spot2,pallapiazzata,cannonepiazzato,pallacaricata, palla, cannone,collidercannone,colliderpalla;
     private int pieno;
     private Vector3 t1,t2;
     private string s1, s2;
@@ -94,7 +94,7 @@ public class scena2 : MonoBehaviour
         explored.SetAll(false);
         sceneInfo.actualscene = 1;
 
-
+        
 
         //   ogmat = ogg.GetComponent<MeshRenderer>().material;
     }
@@ -118,7 +118,7 @@ public class scena2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
 
         if (sceneInfo.changed == true && sceneInfo.actualscene == 2)
         {
@@ -200,19 +200,61 @@ public class scena2 : MonoBehaviour
             else tmp.SetActive(false);
             sceneInfo.changed = false;
         }
+        else if (sceneInfo.changed==true && sceneInfo.actualscene == 4)
+        {
+            if (sceneInfo.lvpassed == true)
+            {
+                space1 = null;
+                space2 = null;
+                Destroy(c);
+                Destroy(c1);
+                c = null;
+                c1 = null;
+                open = false;
+                open2 = false;
+                open3 = false;
+                sceneInfo.lunghezzascala = 0;
+                sceneInfo.var = 0;
+                open4 = false;
+                placed = false;
+                interacted = false;
+                canplace = false;
+                modified = false;
+                text.text = "";
+                tempUp = null; tempDown = null;
+                sceneInfo.inventory = 0;
+                sceneInfo.lvpassed = false;
 
-        //gaze.fillAmount = 0;
+
+            }
+            sceneInfo.scene = 4;
+            explored.SetAll(false);
+            pallacaricata = GameObject.Find("pallacaricata");
+            pallapiazzata = GameObject.Find("pallapiazzata");
+            cannonepiazzato = GameObject.Find("cannonepiazzato");
+            palla= GameObject.Find("palla");
+            cannone= GameObject.Find("cannone");
+            pallacaricata.SetActive(false);
+            pallapiazzata.SetActive(false);
+            cannonepiazzato.SetActive(false);
+            colliderpalla = GameObject.Find("colliderpalla");
+            collidercannone = GameObject.Find("collidercannon");
+            scriptmachineright = false;
+            scriptconduitright = false;
+            smp = false;
+            scp = false;
+            sceneInfo.changed=false;
+        }
+        
         RaycastHit hit;
         Vector3 v;
         v.x = Screen.width / 2;
         v.y = Screen.height / 2;
         v.z = -0.5f;
-
         Ray ray = camera.ScreenPointToRay(v);
 
         if (Physics.Raycast(ray, out hit))
         {
-
             Transform objecthit = hit.transform;
             string tag = objecthit.gameObject.tag;
             int layer = objecthit.gameObject.layer;
@@ -230,23 +272,16 @@ public class scena2 : MonoBehaviour
                         Pos = objecthit.position;
                         Rot = objecthit.rotation;
 
-
-
                         GameObject[] list = new GameObject[4];
                         list = Collect(objecthit.gameObject, c, c1, slot1, space1, space2);
                         c = list[0];
                         c1 = list[1];
                         space1 = list[2];
-                        space2 = list[3];
-
-                        //Destroy(objecthit.gameObject);
-
-
+                        space2 = list[3];                       
                         cnt = 0;
                         gaze.fillAmount = 0;
                         text.text = "variable obtained";
                         modified = true;
-
                     }
                 }
             }
@@ -345,6 +380,277 @@ public class scena2 : MonoBehaviour
             }
             switch (tag)
             {
+                case "shoot":
+                    cnt += Time.deltaTime;
+                    gaze.fillAmount = cnt / time;
+                    if (gaze.fillAmount == 1)
+                    {
+                        if (scriptmachineright)
+                        {
+                            pallacaricata.GetComponent<Animator>().Play("lanciapalla");
+                         
+                        }
+                        else if (smp)
+                        {
+
+                            text.text = "the script is wrong, try again";
+                        }
+                        else text.text = "nothing appened, insert a script";
+                        
+                        modified = true;
+                        cnt = 0;
+                        gaze.fillAmount = 0;
+                    }
+                    break;
+                case "scriptconduit":
+                    cnt += Time.deltaTime;
+                    gaze.fillAmount = cnt / time;
+                    if (gaze.fillAmount == 1)
+                    {
+                        if (sceneInfo.inventory > 0)
+                        {
+                            GameObject[] list = new GameObject[4];
+                            if (sceneInfo.hasC==true && c.CompareTag("conduitsheet"))
+                            {
+                                if (sceneInfo.rightC == true)
+                                    scriptconduitright = true;
+                                else scriptconduitright = false;
+                                list = Put(c, c1, space1, space2);
+                                c = list[0];
+                                c1 = list[1];
+                                space1 = list[2];
+                                space2 = list[3];
+                                
+                                text.text = ("script placed");
+                                scp = true;
+                                sceneInfo.hasC = false; sceneInfo.rightC = false;
+
+                            }
+                            else if (sceneInfo.hasC == true &&  c1 != null && c1.CompareTag("conduitsheet"))
+                            {
+                                if (sceneInfo.rightC == true)
+                                    scriptconduitright = true;
+                                else scriptconduitright = false;
+                                Destroy(c1);
+                                c1 = null;
+                                space2 = null;
+                               
+                                sceneInfo.inventory--;
+                                text.text = ("script placed");
+                                scp = true;
+                                sceneInfo.hasC = false; sceneInfo.rightC = false;
+                            }
+                            else text.text = "no script to place";
+
+
+                        }
+                        else text.text = "inventory is empty";
+                        modified = true;
+                        cnt = 0;
+                        gaze.fillAmount = 0;
+                    }
+                    break;
+                case "scriptmachine":
+                    cnt += Time.deltaTime;
+                    gaze.fillAmount = cnt / time;
+                    if (gaze.fillAmount == 1)
+                    {
+                        if (sceneInfo.inventory > 0)
+                        {
+                            GameObject[] list = new GameObject[4];
+                            if (sceneInfo.hasM == true && c.CompareTag("conduitsheet"))
+                            {
+                                if (sceneInfo.rightM == true)
+                                    scriptmachineright = true;
+                                else scriptmachineright = false;
+                                list = Put(c, c1, space1, space2);
+                                c = list[0];
+                                c1 = list[1];
+                                space1 = list[2];
+                                space2 = list[3];
+
+                                text.text = ("script placed");
+                                scp = true;
+                                sceneInfo.hasM = false; sceneInfo.rightM = false;
+
+                            }
+                            else if (sceneInfo.hasM == true && c1 != null && c1.CompareTag("conduitsheet"))
+                            {
+                                if (sceneInfo.rightM == true)
+                                    scriptmachineright = true;
+                                else scriptmachineright = false;
+                                Destroy(c1);
+                                c1 = null;
+                                space2 = null;
+
+                                sceneInfo.inventory--;
+                                text.text = ("script placed");
+                                smp = true;
+                                sceneInfo.hasM = false; sceneInfo.rightM = false;
+
+                            }
+                            else text.text = "no script to place";
+
+
+                        }
+                        else text.text = "inventory is empty";
+                        modified = true;
+                        cnt = 0;
+                        gaze.fillAmount = 0;
+                    }
+                    break;
+                case "placeball":
+                    cnt += Time.deltaTime;
+                    gaze.fillAmount = cnt / time;
+                    if (gaze.fillAmount == 1)
+                    {
+                        if (sceneInfo.inventory > 0)
+                        {
+                            GameObject[] list = new GameObject[4];
+                            if (canplace)
+                            {
+                                if (c.CompareTag("palla"))
+                                {
+                                    list = Put(c, c1, space1, space2);
+                                    c = list[0];
+                                    c1 = list[1];
+                                    space1 = list[2];
+                                    space2 = list[3];
+                                    pallapiazzata.SetActive(true);
+                                    text.text = ("object placed");
+                                    colliderpalla.SetActive(false);
+                                    if (scriptconduitright)
+                                    {
+                                        pallapiazzata.GetComponent<Animator>().Play("load");
+                                        pallacaricata.SetActive(true);
+                                    }
+                                    else if (scp)
+                                    {
+
+                                        text.text = "the script is wrong, try again";
+                                    }
+                                    else text.text = "nothing appened, insert a script";
+                                }
+                                else if (c1 != null && c1.CompareTag("palla"))
+                                {
+                                    Destroy(c1);
+                                    c1 = null;
+                                    space2 = null;
+                                    pallapiazzata.SetActive(true);
+                                    sceneInfo.inventory--;
+                                    text.text = ("object placed");
+                                    colliderpalla.SetActive(false);
+                                    if (scriptconduitright)
+                                    {
+                                        pallapiazzata.GetComponent<Animator>().Play("load");
+                                        pallacaricata.SetActive(true);
+                                    }
+                                    else if (scp)
+                                    {
+
+                                        text.text = "the script is wrong, try again";
+                                    }
+                                    else text.text = "nothing appened, insert a script";
+                                }
+                                else text.text = "no objects to place";
+
+
+                            }
+                            else text.text = "first place the cannon";
+                        }
+                        else text.text = "invenrtory is empty";
+                        modified = true;
+                        cnt = 0;
+                        gaze.fillAmount = 0;
+                    }
+                    break;
+                case "placecannon":
+                    cnt += Time.deltaTime;
+                    gaze.fillAmount = cnt / time;
+                    if (gaze.fillAmount == 1)
+                    {
+                        if (sceneInfo.inventory > 0)
+                        {
+                            GameObject[] list = new GameObject[4];
+                            if (c.CompareTag("cannon"))
+                            {
+                                list = Put(c, c1, space1, space2);
+                                c = list[0];
+                                c1 = list[1];
+                                space1 = list[2];
+                                space2 = list[3];
+                                cannonepiazzato.SetActive(true);
+                                text.text = ("object placed");
+                                canplace = true;
+                                collidercannone.SetActive(false);
+                            }
+                            else if (c1 != null && c1.CompareTag("cannon"))
+                            {
+                                Destroy(c1);
+                                c1 = null;
+                                space2 = null;
+                                cannonepiazzato.SetActive(true);
+                                sceneInfo.inventory--;
+                                text.text = ("object placed");
+                                canplace = true;
+                                collidercannone.SetActive(false);
+                            }
+                            else text.text = "you need a cannon";
+                           
+
+                        }
+                        else text.text = "inventory is empty";
+                        modified = true;
+                        cnt = 0;
+                        gaze.fillAmount = 0;
+                    }
+                    break;
+                case "cannon":
+                    cnt += Time.deltaTime;
+                    gaze.fillAmount=cnt/time;
+                    if (gaze.fillAmount == 1)
+                    {
+                        if (sceneInfo.inventory < 2)
+                        {
+                            GameObject[] list = new GameObject[4];
+                            list = Collect(objecthit.gameObject, c, c1, slot1, space1, space2);
+                            c = list[0];
+                            c1 = list[1];
+                            space1 = list[2];
+                            space2 = list[3];
+                            objecthit.gameObject.SetActive(false);
+                            text.text = ("object taken");
+                            collidercannone.SetActive(true);
+                        }
+                        else text.text = "inventory is full";
+                        modified = true;
+                        cnt = 0;
+                        gaze.fillAmount = 0;
+                    }
+                    break;
+                case "palla":
+                    cnt += Time.deltaTime;
+                    gaze.fillAmount = cnt / time;
+                    if (gaze.fillAmount == 1)
+                    {
+                        if (sceneInfo.inventory < 2)
+                        {
+                            GameObject[] list = new GameObject[4];
+                            list = Collect(objecthit.gameObject, c, c1, slot1, space1, space2);
+                            c = list[0];
+                            c1 = list[1];
+                            space1 = list[2];
+                            space2 = list[3];
+                          objecthit.gameObject.SetActive(false);
+                            text.text = ("object taken");
+                            colliderpalla.SetActive(true);
+                        }
+                        else text.text = "inventory is full";
+                        modified = true;
+                        cnt = 0;
+                        gaze.fillAmount = 0;
+                    }
+                    break;
                 case "save":
                     cnt += Time.deltaTime;
                     gaze.fillAmount = cnt / time;
@@ -451,7 +757,6 @@ public class scena2 : MonoBehaviour
                         }
                     }
                     break;
-
                 case "book3":
                     if (modified1 == false)
                     {
@@ -516,7 +821,7 @@ public class scena2 : MonoBehaviour
                             c1 = list[1];
                             space1 = list[2];
                             space2 = list[3];
-                            Destroy(objecthit.gameObject);
+                            objecthit.gameObject.SetActive(false);
                             text.text = ("variable taken");
                             modified = true;
 
@@ -793,18 +1098,7 @@ public class scena2 : MonoBehaviour
 
                    
 
-                    break;
-
-
-                    //-----------------------------
-                    //---------------------------------
-                    //----------------buttons----------
-                    //
-                    //
-                    //
-                    //
-
-
+                    break;              
                 case "buttonKey":
                     if (dist < 15)//&& assigned == false && placed == true)
                     {
@@ -1009,8 +1303,6 @@ public class scena2 : MonoBehaviour
                         }
                     }
                         break;
-
-
                 case "door":
                     cnt += Time.deltaTime;
                     gaze.fillAmount = cnt / time;                 
@@ -1116,7 +1408,6 @@ public class scena2 : MonoBehaviour
 
                     }
                     break;
-
                 case "book":
                     if (modified1 == false)
                     {
@@ -1138,7 +1429,6 @@ public class scena2 : MonoBehaviour
 
                     }
                     break;
-
                 case "close":
                     cnt += Time.deltaTime;
                     gaze.fillAmount = cnt / time;
@@ -1178,20 +1468,20 @@ public class scena2 : MonoBehaviour
                     }
                     break;
 
-
                 default:
                     if (cnt > 0 && layer != 9) cnt -= Time.deltaTime;
                     gaze.fillAmount = cnt / time;
                     // if (gaze.fillAmount == 0) { ogg.GetComponent<MeshRenderer>().material = ogmat; }
                     break;
             }
-
         }
         else
         {
             if (cnt > 0) cnt -= Time.deltaTime;
             gaze.fillAmount = cnt / time;
         }
+
+
         if (modified == true)
         {
             text.color = new Color(text.color.r, text.color.g, text.color.b, text.color.a - 0.0005f);
@@ -1551,6 +1841,12 @@ public class scena2 : MonoBehaviour
             case "conduitsheet":
                 namevar = "preconduit";
                 break;
+            case "palla":
+                namevar = "palla";
+                break;
+            case "cannon":
+                namevar = "cannone";
+                break;
             default:
                 namevar = "";
                 break;
@@ -1592,6 +1888,12 @@ public class scena2 : MonoBehaviour
                     break;
                 case "conduitsheet":
                     namevar1 = "preconduit";
+                    break;
+                case "palla":
+                    namevar1 = "palla";
+                    break;
+                case "cannon":
+                    namevar1 = "cannone";
                     break;
                 default:
                     namevar1 = "";
@@ -1650,6 +1952,16 @@ public class scena2 : MonoBehaviour
                 GameObject e = GameObject.Find("height");
                 o.transform.rotation = e.transform.rotation;
                 o.transform.localScale = e.transform.localScale * 130;
+                break;
+            case "palla":
+                
+                o.transform.rotation = palla.transform.rotation;
+                o.transform.localScale = palla.transform.localScale * 520;
+                break;
+            case "cannon":
+                
+               // o.transform.rotation = y.transform.rotation;
+                o.transform.localScale = cannone.transform.localScale *300;
                 break;
             default:
                 o.transform.localScale = slot1.localScale ;

@@ -29,6 +29,13 @@ TagManager:
   - writed
   - writed2
   - save
+  - palla
+  - cannon
+  - placecannon
+  - placeball
+  - shoot
+  - scriptmachine
+  - scriptconduit
   layers:
   - Default
   - TransparentFX

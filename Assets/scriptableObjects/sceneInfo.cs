@@ -26,5 +26,10 @@ public class sceneInfo : ScriptableObject
         hasKey = false;
         hasLadder = false;
         lunghezzascala = 0;
+        hasC = false;
+        hasM = false;
+        rightC= false;
+        rightM = false;
+        ismachine = false;
     }
 }
